@@ -1,0 +1,28 @@
+# Core dependencies for MobileFCMViTv3
+python_version >= 3.11
+
+# Deep learning
+torch
+
+# Data processing
+numpy
+pandas
+Pillow
+scikit-learn
+opencv-python
+pydicom
+
+# Visualization
+matplotlib
+seaborn
+
+# Experiment tracking
+wandb
+
+# Model export
+onnx
+tensorflow
+
+# Testing
+pytest
+unittest

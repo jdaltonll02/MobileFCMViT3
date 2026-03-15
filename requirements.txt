@@ -1,5 +1,5 @@
 # Core dependencies for MobileFCMViTv3
-python_version >= 3.11
+#python_version >= 3.11
 
 # Deep learning
 torch
@@ -25,4 +25,4 @@ tensorflow
 
 # Testing
 pytest
-unittest
+#unittest

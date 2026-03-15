@@ -24,7 +24,8 @@ class UltrasoundDataset(Dataset):
         return len(self.image_paths)
 
     def __getitem__(self, idx: int):
-        img = Image.open(self.image_paths[idx]).convert('L')
+        from .dataset_loader import DatasetLoader
+        img = DatasetLoader.load_image(self.image_paths[idx])
         label = self.labels[idx]
         if self.transform:
             img = self.transform(img)

@@ -12,6 +12,47 @@ from .normalization import Normalization
 from .resize import Resize
 
 class UltrasoundPreprocessingPipeline:
+    def save_preprocessed(self, class_image_dict, output_dir='data/preprocessed'):
+            """
+            Preprocess and save images to output_dir, organized by class.
+            Args:
+                class_image_dict: dict mapping class names to lists of image paths
+                output_dir: directory to save preprocessed images
+            """
+            import os
+            os.makedirs(output_dir, exist_ok=True)
+            for cls, images in class_image_dict.items():
+                cls_dir = os.path.join(output_dir, cls)
+                os.makedirs(cls_dir, exist_ok=True)
+                for img_path in images:
+                    img = Image.open(img_path)
+                    pre_img = self.preprocess(img)
+                    # Save as PNG
+                    base = os.path.splitext(os.path.basename(img_path))[0]
+                    out_path = os.path.join(cls_dir, f'{base}_preprocessed.png')
+                    Image.fromarray(pre_img).save(out_path)
+                    
+    def balance_classes(self, class_image_dict):
+        """
+        Perform targeted augmentation for minority classes to ensure class balance.
+        Args:
+            class_image_dict: dict mapping class names to lists of image paths
+        Returns:
+            dict with balanced lists of image paths
+        """
+        from random import choice
+        max_count = max(len(images) for images in class_image_dict.values())
+        balanced = {cls: list(images) for cls, images in class_image_dict.items()}
+        for cls, images in balanced.items():
+            while len(images) < max_count:
+                img_path = choice(images)
+                img = Image.open(img_path)
+                aug_img = self._augment(img)
+                # Optionally save augmented image to disk, here we keep in memory
+                images.append(img_path) # Placeholder: replace with actual augmented image path if saving
+            balanced[cls] = images
+        return balanced
+    
     def __init__(self, size: int = 224, denoise_method: str = 'median', apply_clahe: bool = True, augment: bool = False):
         """
         Initialize preprocessing pipeline.

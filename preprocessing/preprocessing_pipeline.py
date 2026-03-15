@@ -5,11 +5,11 @@ Ultrasound image preprocessing pipeline.
 from typing import Union
 from PIL import Image
 import numpy as np
-from .dicom_converter import DICOMConverter
-from .denoise import Denoise
-from .clahe import CLAHE
-from .normalization import Normalization
-from .resize import Resize
+from preprocessing.dicom_converter import DICOMConverter
+from preprocessing.denoise import Denoise
+from preprocessing.clahe import CLAHE
+from preprocessing.normalization import Normalization
+from preprocessing.resize import Resize
 
 class UltrasoundPreprocessingPipeline:
     def save_preprocessed(self, class_image_dict, output_dir='data/preprocessed'):

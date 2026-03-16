@@ -5,6 +5,7 @@ Ultrasound image preprocessing pipeline.
 from typing import Union
 from PIL import Image
 import numpy as np
+import os
 from preprocessing.dicom_converter import DICOMConverter
 from preprocessing.denoise import Denoise
 from preprocessing.clahe import CLAHE
@@ -95,3 +96,13 @@ class UltrasoundPreprocessingPipeline:
     def _augment(self, image: Image.Image) -> Image.Image:
         # Example: horizontal flip
         return image.transpose(Image.FLIP_LEFT_RIGHT)
+
+if __name__ == "__main__":
+    benign = [os.path.join('data/benign', f) for f in os.listdir('data/benign')]
+    malignant = [os.path.join('data/malignant', f) for f in os.listdir('data/malignant')]
+    normal = [os.path.join('data/normal', f) for f in os.listdir('data/normal')]
+    class_dict = {'Benign': benign, 'Malignant': malignant, 'Normal': normal}
+    pipeline = UltrasoundPreprocessingPipeline()
+    balanced = pipeline.balance_classes(class_dict)
+    pipeline.save_preprocessed(balanced, output_dir='data/preprocessed')
+    print('Preprocessing complete.')
